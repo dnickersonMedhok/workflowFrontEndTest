@@ -1,20 +1,12 @@
-import React, { Component } from 'react';
-import logo from './resources/MEDHOK-Logo-Blue.png';
-import './App.css';
+import React from 'react'
+import Header from './Header'
+import Main from './Main'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo}  alt="logo" />
-          <p>
-            Workflow test
-          </p>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <div>
+    <Header />
+    <Main />
+  </div>
+)
 
-export default App;
+export default App
