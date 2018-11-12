@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { apiUrl } from '../../resources/apiUrl';
 
 class WorkflowDesigner extends Component { 
   constructor(props) {
@@ -26,7 +26,7 @@ class WorkflowDesigner extends Component {
 
   componentDidMount() {
 
-fetch('http://localhost:8080/getModelsByTypeId/3')
+fetch(apiUrl.url.concat('getModelsByTypeId/3'))
 .then(res => res.json())
 .then(data => this.setState({data}));
 

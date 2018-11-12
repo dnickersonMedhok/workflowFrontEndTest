@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { apiUrl } from '../../resources/apiUrl';
 
 class EntityDesigner extends Component { 
   constructor(props) {
@@ -25,13 +25,9 @@ class EntityDesigner extends Component {
   }
 
   componentDidMount() {
-
-fetch('http://localhost:8080/getModelsByTypeId/1')
-.then(res => res.json())
-.then(data => this.setState({data}));
-
-
-    
+    fetch(apiUrl.url.concat('getModelsByTypeId/1'))
+    .then(res => res.json())
+    .then(data => this.setState({data}));
   }
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FormEngine, Form } from "react-json-form-engine";
-
-
+import { apiUrl } from '../../resources/apiUrl';
 
 class FormDesigner extends Component { 
   constructor(props) {
@@ -113,7 +112,7 @@ class FormDesigner extends Component {
 
   componentDidMount() {
 
-    fetch('http://localhost:8080/getModelsByTypeId/2')
+    fetch(apiUrl.url.concat('getModelsByTypeId/2'))
     .then(res => res.json())
     .then(data => this.setState({data})); 
     this.setFormEngine();
