@@ -12,7 +12,7 @@ class EntityDesigner extends Component {
 
   render() {
     return (<div className="App">
-      <h1>The Entity Designer</h1> 
+      <h5><b>The Entity Designer</b></h5> 
       Available entity models:
       <ul>
                 {

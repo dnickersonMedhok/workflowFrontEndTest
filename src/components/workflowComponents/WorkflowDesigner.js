@@ -12,7 +12,7 @@ class WorkflowDesigner extends Component {
 
   render() {
     return (<div className="App">
-      <h1>The Workflow Designer</h1> 
+      <h1><b>The Workflow Designer</b></h1> 
       Available workflow models:
       <ul>
                 {
