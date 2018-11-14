@@ -11,6 +11,8 @@ class FormDesigner extends Component {
       formJson: null,
       formInstance: null
     };
+
+    this.setFormEngine = this.setFormEngine.bind(this);
   }
 
   setFormEngine() {
