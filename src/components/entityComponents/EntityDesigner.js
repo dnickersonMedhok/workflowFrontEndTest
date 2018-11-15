@@ -36,7 +36,7 @@ class EntityDesigner extends Component {
         <FormGroup controlId="formBasicText">
           <ControlLabel><b>New entity</b></ControlLabel><br/>
           <ControlLabel>Entity name</ControlLabel>
-          <FormControl className="form-control" type="text" name="entityName" value={this.state.entityName} onChange={this.handleEntityNameChange}  />
+          <FormControl className="form-control" type="text" name="entityName" id="entityName" value={this.state.entityName} onChange={this.handleEntityNameChange}  />
           <br/><br/>
           {this.state.inputs.map((item, key) => {
             return <FormControl className="form-control" type="text" name={item} key={key} onChange={this.handleFieldNameChange}/>;

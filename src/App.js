@@ -1,20 +1,7 @@
-// import React from 'react'
-// import Header from './Header'
-// import Main from './Main'
-
-// const App = () => (
-//   <div>
-//     <Header />
-//     <Main />
-//   </div>
-// )
-
-// export default App
 import Home from './components/home/Home'
 import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
-import { apiUrl } from './resources/apiUrl';
 
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
