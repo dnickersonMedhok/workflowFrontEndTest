@@ -4,7 +4,7 @@ import '../../css/App.css';
 
 const Home = () => (
   <div className="App" >
-    <img src={logo}  alt="logo" />
+    <img src={logo}   className="App-logo" alt="logo" />
   </div>
 )
 
