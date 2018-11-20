@@ -32,8 +32,8 @@ class EntityDesigner extends Component {
         }
       </ul>
       <hr/>
-      <Form class="form-inline" onSubmit={this.handleSubmit}>
-        <FormGroup controlId="formBasicText">
+      <Form horizontal onSubmit={this.handleSubmit}>
+        <FormGroup> 
           <ControlLabel><b>New entity</b></ControlLabel><br/>
           <ControlLabel>Entity name</ControlLabel>
           <FormControl className="form-control" type="text" name="entityName" id="entityName" value={this.state.entityName} onChange={this.handleEntityNameChange}  />
@@ -80,7 +80,6 @@ class EntityDesigner extends Component {
   save() {
     var fieldsObj = {
       entityName: this.state.entityName,
-      table: "GENERIC_TABLE_1",
       parentTable: "",
       fields: []
     }
@@ -92,7 +91,6 @@ class EntityDesigner extends Component {
       var newField = {
         fieldName: this.state.fields[i].fieldName,
         fieldType: "text",
-        column: "varchar_45_1"
       }
       fieldsObj.fields[i] = newField;
     }
@@ -106,7 +104,7 @@ class EntityDesigner extends Component {
     jsonObj["content"] = JSON.stringify(fieldsObj);
     console.log(jsonObj);
   
-    fetch(apiUrl.url.concat('saveModel'), {
+    fetch(apiUrl.url.concat('saveEntityModel'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -114,8 +112,15 @@ class EntityDesigner extends Component {
       },
       body: JSON.stringify(jsonObj)
     });
+    this.setState((state, props) => (    {
+      data: [],
+      inputs: [],
+      fields: [],
+      entityName: ""
+    }));
     this.componentDidMount();
-    this.setState({ state: this.state });
+
+
   }
 }
 
