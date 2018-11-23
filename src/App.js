@@ -3,34 +3,39 @@ import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
 
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const routes = [
-  {
-    path: "/",
-    exact: true,
-    sidebar: () => <div></div>,
-    main: () => <Home />
-  },
-  {
-    path: "/entityDesigner",
-    sidebar: () => <div>entity designer stuff here</div>, //TODO: create components for each type for the sidebar
-    main: () => <EntityDesigner />
-  },
-  {
-    path: "/formDesigner",
-    sidebar: () => <div>Form Designer stuff here</div>,
-    main: () => <FormDesigner />
-  },
-  {
-    path: "/workflowDesigner",
-    sidebar: () => <div>Workflow Designer stuff here</div>,
-    main: () => <WorkflowDesigner />
-  }
-];
 
-function App() {
+class App extends Component {
+
+
+
+render() {
+
+  const routes = [
+    {
+      path: "/",
+      exact: true,
+      sidebar: () => <div></div>,
+      main: () => <Home />
+    },
+    {
+      path: "/entityDesigner",
+      sidebar: () => <div>entity designer stuff here</div>, //TODO: create components for each type for the sidebar
+      main: () => <EntityDesigner />
+    },
+    {
+      path: "/formDesigner",
+      sidebar: () => <div>Form Designer stuff here</div>,
+      main: () => <FormDesigner />
+    },
+    {
+      path: "/workflowDesigner",
+      sidebar: () => <div>Workflow Designer stuff here</div>,
+      main: () => <WorkflowDesigner />
+    }
+  ];
   return (
     <Router>
       <div style={{ display: "flex" }}>
@@ -79,6 +84,7 @@ function App() {
       </div>
     </Router>
   );
+}
 }
 
 export default App;
