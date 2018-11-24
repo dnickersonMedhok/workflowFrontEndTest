@@ -2,6 +2,7 @@ import Home from './components/home/Home'
 import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
+import FormSidebar from './components/formComponents/formSidebar'
 
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -27,7 +28,7 @@ render() {
     },
     {
       path: "/formDesigner",
-      sidebar: () => <div>Form Designer stuff here</div>,
+      sidebar: () => <FormSidebar />,
       main: () => <FormDesigner />
     },
     {
