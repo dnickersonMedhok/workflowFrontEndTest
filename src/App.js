@@ -3,6 +3,7 @@ import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
 import FormSidebar from './components/formComponents/formSidebar'
+import EntitySidebar from './components/entityComponents/EntitySidebar'
 
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -23,7 +24,7 @@ render() {
     },
     {
       path: "/entityDesigner",
-      sidebar: () => <div>entity designer stuff here</div>, //TODO: create components for each type for the sidebar
+      sidebar: () => <EntitySidebar />, 
       main: () => <EntityDesigner />
     },
     {

@@ -23,15 +23,7 @@ class EntityDesigner extends Component {
   render() {
     return (<div className="App" >
       <center><h5><b>The Entity Designer</b></h5> 
-      Available entity models:
-      <ul>
-        {
-          this.state.data.map((item, key) => {
-            return <li key={key}>{item.name} </li>
-          })
-        }
-      </ul>
-      <hr/>
+
       <Form horizontal onSubmit={this.handleSubmit}>
         <FormGroup> 
           <ControlLabel><b>New entity</b></ControlLabel><br/>
@@ -52,12 +44,6 @@ class EntityDesigner extends Component {
       </center>
           
       </div>);
-  }
-
-  componentDidMount() {
-    fetch(apiUrl.url.concat('getModelsByTypeId/1'))
-    .then(res => res.json())
-    .then(data => this.setState({data}));
   }
 
   appendInput() {
