@@ -11,6 +11,27 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formJson: thisJson
+    };
+
+    this.setFormJson = this.setFormJson.bind(this);
+    this.getFormJson = this.getFormJson.bind(this);
+
+  }
+
+  setFormJson(newFormJson){
+    this.setState((state, props) => ({
+      formJson: newFormJson
+    }));
+  }
+
+  getFormJson() {
+    return this.state.formJson;
+  }
 
 
 render() {
@@ -29,8 +50,8 @@ render() {
     },
     {
       path: "/formDesigner",
-      sidebar: () => <FormSidebar />,
-      main: () => <FormDesigner />
+      sidebar: () => <FormSidebar setFormJson={this.setFormJson} getFormJson={this.getFormJson}/>,
+      main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} />
     },
     {
       path: "/workflowDesigner",
@@ -88,5 +109,61 @@ render() {
   );
 }
 }
+
+const thisJson =         {
+  id: "login_form",
+  title: "Welcome to Foo!",
+  sections: [
+    {
+      id: "section_1",
+      title: "Login Section",
+      subsections: [
+        {
+          id: "subsection_1",
+          title: "Test form",
+          subtitle: "This is just a test form.",
+          fields: [
+            {
+              id: "user_name",
+              title: "field 1",
+              type: "string"
+            },
+            {
+              id: "user_pass",
+              title: "field 2",
+              type: "string"
+            },
+            {
+              id: "remember_me",
+              title: "just some random checkbox",
+              type: "boolean"
+            },
+          {
+            "id": "bool3",
+            "type": "boolean",
+            "title": "just some random radio buttons",
+            "inline": false,
+            "options": [
+              {
+                "title": "Yes"
+              },
+              {
+                "title": "No"
+              }
+            ]
+          }
+          ]
+        }
+      ]
+    }
+  ],
+  decorators: {
+    "user_pass": {
+      component: {
+        type: "password"
+      }
+    }
+  }        
+};
 
 export default App;

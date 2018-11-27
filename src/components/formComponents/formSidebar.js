@@ -25,7 +25,7 @@ class FormSidebar extends Component  {
                     }
                 </ul>
         <Popup trigger={<button> preview</button>} position="bottom left">
-            <FormPreview />
+            <FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/>
         </Popup>
   </div>);
  }

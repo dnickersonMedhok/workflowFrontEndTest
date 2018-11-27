@@ -12,16 +12,8 @@ class FormDesigner extends Component {
 
   render() {
     return (<div className="App">
-      <h1><b>The Form Designer</b></h1> 
-      Available form models:
-      <ul>
-                {
-                    this.state.data.map((item) => {
-                       return <li key={item.id}>{item.name} </li>
-                    })
-                }
-            </ul>
-      </div>
+              <h1><b>The Form Designer</b></h1> 
+            </div>
 );
   }
 

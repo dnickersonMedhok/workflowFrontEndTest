@@ -7,7 +7,6 @@ class FormPreview extends Component {
         super(props);
 
         this.state = {
-            formJson: null,
             formInstance: null
         };
 
@@ -17,11 +16,12 @@ class FormPreview extends Component {
 
     setFormEngine() {
         this.setState((state, props) => ({
-          formInstance: new FormEngine(this.state.formJson)
+          formInstance: new FormEngine(this.props.getFormJson())
         }));
       }
 
       render() {
+
             return <Form 
                         hideTitle
                         submitButtonLabel="submit"
@@ -37,70 +37,12 @@ class FormPreview extends Component {
 
 
   componentWillMount() {
-    //TODO: get this from the DB 
-        this.setState((state, props) => ({
-          formJson: {
-            id: "login_form",
-            title: "Welcome to Foo!",
-            sections: [
-              {
-                id: "section_1",
-                title: "Login Section",
-                subsections: [
-                  {
-                    id: "subsection_1",
-                    title: "Test form",
-                    subtitle: "This is just a test form.",
-                    fields: [
-                      {
-                        id: "user_name",
-                        title: "field 1",
-                        type: "string"
-                      },
-                      {
-                        id: "user_pass",
-                        title: "field 2",
-                        type: "string"
-                      },
-                      {
-                        id: "remember_me",
-                        title: "just some random checkbox",
-                        type: "boolean"
-                      },
-                    {
-                      "id": "bool3",
-                      "type": "boolean",
-                      "title": "just some random radio buttons",
-                      "inline": false,
-                      "options": [
-                        {
-                          "title": "Yes"
-                        },
-                        {
-                          "title": "No"
-                        }
-                      ]
-                    }
-                    ]
-                  }
-                ]
-              }
-            ],
-            decorators: {
-              "user_pass": {
-                component: {
-                  type: "password"
-                }
-              }
-            }
-          },
-          formInstance: new FormEngine(this.state.formJson)        
-      }));
-      }
+    this.setState( {formInstance: new FormEngine(this.props.getFormJson()) });
+  }
 
-      componentDidMount() {
-        this.setFormEngine();
-      }
+  componentDidMount() {
+    this.setFormEngine();
+  }
 
 }
 
