@@ -7,22 +7,25 @@ class EntitySidebar extends Component  {
         super(props);
     
         this.state = {
-          data: []
-        };
+          data: []        };
+        this.handleClick = this.handleClick.bind(this);
       }
  
  render() {
     return   (<div>
               Available entity models:
-                 <ul>
                     {
-                        this.state.data.map((item) => {
-                        return <li key={item.id}>{item.name} </li>
-                    })
+                        this.state.data.map((item, key) => {
+                           return <div><a href="true" key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a><br /></div> 
+                        })
                     }
-                </ul>
             </div>);
  }
+
+ handleClick(item, e) {
+    e.preventDefault();
+    this.props.setEntityModel(item);
+  }
 
  componentDidMount() {
 

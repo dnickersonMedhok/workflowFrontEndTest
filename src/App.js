@@ -15,12 +15,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      formJson: thisJson
+      formJson: thisJson,
+      entityModel: null
     };
 
     this.setFormJson = this.setFormJson.bind(this);
     this.getFormJson = this.getFormJson.bind(this);
-
+    this.setEntityModel = this.setEntityModel.bind(this);
+    this.getEntityModel = this.getEntityModel.bind(this);
   }
 
   setFormJson(newFormJson){
@@ -33,6 +35,15 @@ class App extends Component {
     return this.state.formJson;
   }
 
+  setEntityModel(newEntityModel){
+    this.setState((state, props) => ({
+      entityModel: newEntityModel
+    }));
+  }
+
+  getEntityModel() {
+    return this.state.entityModel;
+  }
 
 render() {
 
@@ -45,8 +56,8 @@ render() {
     },
     {
       path: "/entityDesigner",
-      sidebar: () => <EntitySidebar />, 
-      main: () => <EntityDesigner />
+      sidebar: () => <EntitySidebar setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel}/>, 
+      main: () => <EntityDesigner setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} />
     },
     {
       path: "/formDesigner",
