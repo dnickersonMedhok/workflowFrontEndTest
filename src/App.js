@@ -4,6 +4,7 @@ import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
 import FormSidebar from './components/formComponents/formSidebar'
 import EntitySidebar from './components/entityComponents/EntitySidebar'
+import WorkflowSidebar from './components/workflowComponents/workflowSidebar'
 
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -16,13 +17,16 @@ class App extends Component {
 
     this.state = {
       formJson: thisJson,
-      entityModel: null
+      entityModel: null,
+      workflowModel: null
     };
 
     this.setFormJson = this.setFormJson.bind(this);
     this.getFormJson = this.getFormJson.bind(this);
     this.setEntityModel = this.setEntityModel.bind(this);
     this.getEntityModel = this.getEntityModel.bind(this);
+    this.setWorkflowModel = this.setWorkflowModel.bind(this);
+    this.getWorkflowModel = this.getWorkflowModel.bind(this);
   }
 
   setFormJson(newFormJson){
@@ -43,6 +47,16 @@ class App extends Component {
 
   getEntityModel() {
     return this.state.entityModel;
+  }
+
+  setWorkflowModel(newWorkflowModel){
+    this.setState((state, props) => ({
+      workflowModel: newWorkflowModel
+    }));
+  }
+
+  getWorkflowModel() {
+    return this.state.workflowModel;
   }
 
 render() {
@@ -66,8 +80,8 @@ render() {
     },
     {
       path: "/workflowDesigner",
-      sidebar: () => <div>Workflow Designer stuff here</div>,
-      main: () => <WorkflowDesigner />
+      sidebar: () => <WorkflowSidebar setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}/>,
+      main: () => <WorkflowDesigner setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}/>
     }
   ];
   return (
