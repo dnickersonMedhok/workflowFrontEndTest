@@ -5,6 +5,8 @@ import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
 import FormSidebar from './components/formComponents/formSidebar'
 import EntitySidebar from './components/entityComponents/EntitySidebar'
 import WorkflowSidebar from './components/workflowComponents/workflowSidebar'
+//TODO this will have to be created dynamically
+import { data } from "./components/workflowComponents/dagComponents/data";
 
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -18,7 +20,9 @@ class App extends Component {
     this.state = {
       formJson: thisJson,
       entityModel: null,
-      workflowModel: null
+      workflowModel: null,
+      connections: data.connections,
+      nodes: data.nodes,
     };
 
     this.setFormJson = this.setFormJson.bind(this);
@@ -27,11 +31,13 @@ class App extends Component {
     this.getEntityModel = this.getEntityModel.bind(this);
     this.setWorkflowModel = this.setWorkflowModel.bind(this);
     this.getWorkflowModel = this.getWorkflowModel.bind(this);
+    this.setNode = this.setNode.bind(this);
+    this.getNode = this.getNode.bind(this);
   }
 
   setFormJson(newFormJson){
     this.setState((state, props) => ({
-      formJson: newFormJson
+      nodes: newFormJson
     }));
   }
 
@@ -59,6 +65,17 @@ class App extends Component {
     return this.state.workflowModel;
   }
 
+  setNode(newNode){
+    this.setState(() => ({
+      nodes: [...this.state.nodes, newNode],
+
+    }));
+  }
+
+  getNode(){
+      return this.state.nodes
+  }
+
 render() {
 
   const routes = [
@@ -80,8 +97,10 @@ render() {
     },
     {
       path: "/workflowDesigner",
-      sidebar: () => <WorkflowSidebar setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}/>,
-      main: () => <WorkflowDesigner setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}/>
+      sidebar: () => <WorkflowSidebar setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}
+        setNode={this.setNode } getNode={this.getNode}/>,
+      main: () => <WorkflowDesigner setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}
+        getNode={this.getNode}/>
     }
   ];
   return (

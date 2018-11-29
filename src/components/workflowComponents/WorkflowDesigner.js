@@ -19,62 +19,13 @@ import ReactDAG, {DefaultNode} from "react-dag";
 import NodeType1 from "./dagComponents/NodeType1";
 import NodeType2 from "./dagComponents/NodeType2";
 import NodeType3 from "./dagComponents/NodeType3";
-import { css } from "glamor";
 import dagre from "dagre";
 import { data } from "./dagComponents/data";
-/* tslint:disable */
-const uuidv4 = require("uuid/v4");
-/* tslint:enable */
+import { buttonStyles, buttonPanelStyles, dagWrapperStyles, headerStyles } from "./dagComponents/dagUtils"
 
 /* tslint:disable */
 const cloneDeep = require("lodash.clonedeep");
 /* tslint: enable */
-
-//TODO: move css to central location
-
-const HEIGHT_OF_HEADER = 90;
-const HEIGHT_OF_BUTTON_PANEL = 50;
-const headerStyles = css({
-  alignItems: "center",
-  display: "flex",
-  height: `${HEIGHT_OF_HEADER}px`,
-  justifyContent: "center",
-  margin: 0,
-});
-
-const buttonPanelStyles = css({
-  alignItems: "center",
-  background: "white",
-  display: "flex",
-  height: `${HEIGHT_OF_BUTTON_PANEL}px`,
-  justifyContent: "center",
-});
-
-const buttonStyles = css({
-  border: `1px solid ${theme.main.colors.salmonPink}`,
-  boxShadow: `${theme.main.boxShadow()}`,
-  fontSize: "inherit",
-  margin: "0 5px",
-  padding: "5px",
-});
-const nodeType1Styles = css({
-  backgroundColor: theme.main.colors.blueGreen,
-});
-
-const nodeType2Styles = css({
-  backgroundColor: theme.main.colors.teal,
-});
-
-const nodeType3Styles = css({
-  backgroundColor: theme.main.colors.yellow,
-});
-
-const dagWrapperStyles = css({
-  background: "white",
-  height: `calc(100vh - ${HEIGHT_OF_HEADER}px - ${HEIGHT_OF_BUTTON_PANEL +
-    1}px)`,
-  width: "100vw",
-});
 
 const registerTypes = {
   connections: {
@@ -145,18 +96,7 @@ class WorkflowDesigner extends React.Component {
     nodes: data.nodes,
     zoom: 1,
   };
-  addNode = (type) => {
-    const generateNodeConfig = (t) => ({
-      config: {
-        label: `Node Type: ${type} #${Math.ceil(Math.random() * 100)}`,
-        type: t,
-      },
-      id: uuidv4(),
-    });
-    this.setState({
-      nodes: [...this.state.nodes, generateNodeConfig(type)],
-    });
-  };
+
   setZoom = (zoomIn) => {
     if (zoomIn) {
       this.setState({ zoom: this.state.zoom + 0.2 });
@@ -165,41 +105,12 @@ class WorkflowDesigner extends React.Component {
     }
   };
   render() {
+    let nodesFromState = this.props.getNode();
     return [
       <h1 className={`${headerStyles}`} key="title">
         Workflow Designer
       </h1>,
       <div className={`${buttonPanelStyles}`} key="button-panel">
-        <button
-          className={`${buttonStyles} ${nodeType1Styles}`}
-          onClick={this.addNode.bind(null, "transform")}
-        >
-          Add Node Type 1
-        </button>
-        <button
-          className={`${buttonStyles} ${nodeType2Styles}`}
-          onClick={this.addNode.bind(null, "action")}
-        >
-          Add Node Type 2
-        </button>
-        <button
-          className={`${buttonStyles} ${nodeType3Styles}`}
-          onClick={this.addNode.bind(null, "condition")}
-        >
-          Add Node Type 3
-        </button>
-        <button
-          className={`${buttonStyles}`}
-          onClick={this.addNode.bind(null, "source")}
-        >
-          Add Node Type 4
-        </button>
-        <button
-          className={`${buttonStyles} ${nodeType1Styles}`}
-          onClick={this.addNode.bind(null, "sink")}
-        >
-          Add Node Type 5
-        </button>
         <button
           className={`${buttonStyles}`}
           onClick={this.setZoom.bind(this, true)}
@@ -217,7 +128,7 @@ class WorkflowDesigner extends React.Component {
         className={`${dagWrapperStyles}`}
         key="dag"
         connections={cloneDeep(this.state.connections)}
-        nodes={cloneDeep(this.state.nodes)}
+        nodes={cloneDeep(nodesFromState)}
         jsPlumbSettings={defaultSettings}
         connectionDecoders={[
           transformConnectionDecoder,
@@ -234,7 +145,7 @@ class WorkflowDesigner extends React.Component {
         }}
         zoom={this.state.zoom}
       >
-        {this.state.nodes.map((node, i) => {
+        {nodesFromState.map((node, i) => {
           const Component = getComponent(node.config.type);
           return <Component key={i} id={node.id} />;
         })}
