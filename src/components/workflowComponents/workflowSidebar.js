@@ -29,7 +29,6 @@ class WorkflowSidebar extends Component  {
       };
  
  render() {
-     console.log(this.state.nodes)
     return   (    <center><div key="button-panel">
     <button
       className={`${buttonStyles} ${nodeType1Styles}`}

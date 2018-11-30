@@ -12,7 +12,7 @@ import {
   selectedConnectionStyle,
 } from "../../resources/dag-settings";
 import { onConnectionEventHandler, onEndPointClick } from "./dagComponents/eventHandlers";
-import { setGlobal, theme } from "./styles";
+import { setGlobal } from "./styles";
 
 import ReactDAG, {DefaultNode} from "react-dag";
 //TODO: dynamic nodes

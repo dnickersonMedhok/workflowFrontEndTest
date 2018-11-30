@@ -2,14 +2,14 @@ import Home from './components/home/Home'
 import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
-import FormSidebar from './components/formComponents/formSidebar'
-import EntitySidebar from './components/entityComponents/EntitySidebar'
-import WorkflowSidebar from './components/workflowComponents/workflowSidebar'
 //TODO this will have to be created dynamically
 import { data } from "./components/workflowComponents/dagComponents/data";
 
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { push as Menu } from 'react-burger-menu'
+import Sidebar from './components/common/Sidebar';
+import './css/App.css';
 
 
 class App extends Component {
@@ -82,63 +82,32 @@ render() {
     {
       path: "/",
       exact: true,
-      sidebar: () => <div></div>,
       main: () => <Home />
     },
     {
       path: "/entityDesigner",
-      sidebar: () => <EntitySidebar setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel}/>, 
       main: () => <EntityDesigner setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} />
     },
     {
       path: "/formDesigner",
-      sidebar: () => <FormSidebar setFormJson={this.setFormJson} getFormJson={this.getFormJson}/>,
       main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} />
     },
     {
       path: "/workflowDesigner",
-      sidebar: () => <WorkflowSidebar setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}
-        setNode={this.setNode } getNode={this.getNode}/>,
       main: () => <WorkflowDesigner setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}
         getNode={this.getNode}/>
     }
   ];
   return (
     <Router>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            padding: "10px",
-            width: "15%",
-            background: "#f0f0f0"
-          }}
-        >
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/entityDesigner">EntityDesigner</Link>
-            </li>
-            <li>
-              <Link to="/formDesigner">FormDesigner</Link>
-            </li>
-            <li>
-              <Link to="/workflowDesigner">WorkflowDesigner</Link>
-            </li>
-          </ul>
+      <div id="outer-container">
+        <Menu width={ '15%' } isOpen={ true } noOverlay class="bm-menu" pageWrapId={ "page-wrap" }>
 
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              component={route.sidebar}
-            />
-          ))}
-        </div>
-
-        <div style={{ flex: 1, padding: "10px" }}>
+          <Sidebar   setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} 
+                setFormJson={this.setFormJson} getFormJson={this.getFormJson} setWorkflowModel={this.setWorkflowModel} 
+                getWorkflowModel={this.getWorkflowModel} getNode={this.getNode} setNode={this.setNode}  />
+        </Menu>
+        <div id="page-wrap" style={{ flex: 1, padding: "10px" }}>
           {routes.map((route, index) => (
             <Route
               key={index}
@@ -154,6 +123,7 @@ render() {
 }
 }
 
+//hard coded form model for now
 const thisJson =         {
   id: "login_form",
   title: "Welcome to Foo!",

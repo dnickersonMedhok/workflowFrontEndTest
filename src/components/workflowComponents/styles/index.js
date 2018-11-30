@@ -18,7 +18,7 @@ export const theme = {
 
 export function setGlobal() {
   css.global("html, body", {
-    //backgroundColor: `${theme.main.colors.salmonPink}`,
+    backgroundColor: "#eeeeee",
     fontFamily: `Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace`,
     fontSize: "1rem",
     height: "100vh",
