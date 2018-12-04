@@ -1,42 +1,21 @@
 import * as React from "react";
 
 import {DefaultNode} from "react-dag";
-import { css, StyleAttribute } from "glamor";
 import { getSettings } from '../../../resources/dag-settings'
-import { theme } from "../styles";
+import { endPointStyles, nodeStyles, nodeWrapperStyles } from "../styles";
 
-export const endPointStyles = css({
-  "&.right": {
-    left: "190px",
-  },
-  borderRadius: "100%",
-  height: "25px",
-  left: "-12px",
-  position: "absolute",
-  top: "25px",
-  width: "25px",
-  zIndex: 200001,
-});
-export const nodeWrapperStyles = css({
-  alignItems: "center",
-  display: "flex",
-  height: "100%",
-  justifyContent: "center",
-  position: "relative",
-  width: "100%",
-});
-export const nodeStyles = css({
-  background: "white",
-  border: `2px solid ${theme.main.colors.blueGreen}`,
-  cursor: "pointer",
-  display: "inline-block",
-  height: "100px",
-  position: "absolute",
-  width: "200px",
-  zIndex: 20000,
-});
+import { connect } from "react-redux";
+import { showWorkflowNodePropertiesActionHandler } from "../../../redux/actions";
 
-export default class NodeType1 extends DefaultNode {
+
+
+class StepNode extends DefaultNode {
+  constructor(props) {
+    super(props);
+    this.showNodeProps = this.showNodeProps.bind(this);
+  }
+
+
   rightEndpointRef;
 
   componentDidMount() {
@@ -65,6 +44,12 @@ export default class NodeType1 extends DefaultNode {
       this.props.initNode(initConfig);
     }
   }
+
+  showNodeProps() {
+    console.log("called showNodeProps with id: ".concat(this.props.id));
+      showWorkflowNodePropertiesActionHandler(this.props.id);
+    };
+  
   render() {
     const config = this.props.config;
     let style = {};
@@ -72,7 +57,7 @@ export default class NodeType1 extends DefaultNode {
       style = config.style;
     }
     return (
-      <div
+      <div onClick={this.showNodeProps}
         id={this.props.id}
         className={`${nodeStyles}`}
         style={style}
@@ -89,3 +74,18 @@ export default class NodeType1 extends DefaultNode {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  console.log("dispatch");
+  return {
+    currentNodeId: nodeId => {
+       dispatch(showWorkflowNodePropertiesActionHandler(nodeId))
+    }
+  };
+};
+
+//export default NodeType1
+export default connect(
+  null,
+  { mapDispatchToProps }
+)(StepNode);

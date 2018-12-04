@@ -1,4 +1,7 @@
 import * as React from "react";
+import ReactDAG, {DefaultNode} from "react-dag";
+import StepNode from "./dagComponents/StepNode";
+import ConditionNode from "./dagComponents/ConditionNode";
 
 import {
   conditionConnectionDecoder,
@@ -12,13 +15,8 @@ import {
   selectedConnectionStyle,
 } from "../../resources/dag-settings";
 import { onConnectionEventHandler, onEndPointClick } from "./dagComponents/eventHandlers";
-import { setGlobal } from "./styles";
+import { connect } from "react-redux";
 
-import ReactDAG, {DefaultNode} from "react-dag";
-//TODO: dynamic nodes
-import NodeType1 from "./dagComponents/NodeType1";
-import NodeType2 from "./dagComponents/NodeType2";
-import NodeType3 from "./dagComponents/NodeType3";
 import dagre from "dagre";
 import { data } from "./dagComponents/data";
 import { buttonStyles, buttonPanelStyles, dagWrapperStyles, headerStyles } from "./dagComponents/dagUtils"
@@ -40,18 +38,16 @@ const eventListeners = {
   endpointClick: onEndPointClick,
 };
 
-setGlobal();
 const typeToComponentMap = {
-  action: NodeType2,
-  condition: NodeType3,
-  sink: NodeType1,
+  action: StepNode,
+  condition: ConditionNode,
+  sink: StepNode,
   source: DefaultNode,
-  transform: NodeType1,
+  transform: StepNode,
 };
 
 const getComponent = (type) =>
   typeToComponentMap[type] ? typeToComponentMap[type] : DefaultNode;
-
 const getLayout = (nodes, connections, separation = 200) => {
   const graph = new dagre.graphlib.Graph();
   graph.setGraph({
@@ -94,7 +90,7 @@ class WorkflowDesigner extends React.Component {
   state = {
     connections: data.connections,
     nodes: data.nodes,
-    zoom: 1,
+    zoom: .75,
   };
 
   setZoom = (zoomIn) => {
@@ -124,6 +120,11 @@ class WorkflowDesigner extends React.Component {
           Zoom out
         </button>
       </div>,
+            <div className="workflow-rightBar">
+            workflow sidebar <br />
+                  currentNodeId: { this.props.currentNodeId.nodeId } 
+
+        </div>,
       <ReactDAG
         className={`${dagWrapperStyles}`}
         key="dag"
@@ -145,13 +146,15 @@ class WorkflowDesigner extends React.Component {
         }}
         zoom={this.state.zoom}
       >
-        {nodesFromState.map((node, i) => {
-          const Component = getComponent(node.config.type);
-          return <Component key={i} id={node.id} />;
-        })}
-      </ReactDAG>,
+      {nodesFromState.map((node, i) => {
+        const Component = getComponent(node.config.type);
+            return <Component key={i} id={node.id} />;
+          })}
+      </ReactDAG>
     ];
   }
 }
-
-export default WorkflowDesigner
+const mapStateToProps = state => {
+  return { currentNodeId: state.currentNodeId };
+};
+export default connect(mapStateToProps)(WorkflowDesigner); 

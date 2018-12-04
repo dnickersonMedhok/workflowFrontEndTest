@@ -7,69 +7,58 @@ export const data = {
       },
       {
         sourceId: "2",
-        targetId: "3.5",
+        targetId: "3",
       },
       {
         data: {
           condition: "true",
         },
-        sourceId: "3.5",
-        targetId: "4.5",
+        sourceId: "3",
+        targetId: "4",
       },
       {
         data: {
           condition: "false",
         },
-        sourceId: "3.5",
-        targetId: "3",
-      },
-      {
         sourceId: "3",
-        targetId: "4",
-      },
+        targetId: "5",
+      }
     ],
     nodes: [
       {
         config: {
-          label: "Default Node",
-          type: "source",
+          label: "Step 1",
+          type: "transform",
         },
         id: "1",
       },
       {
         config: {
-          label: "Node Type 1",
+          label: "Step 2",
           type: "transform",
         },
         id: "2",
       },
       {
         config: {
-          label: "Node Type 1(Sink)",
-          type: "sink",
+          label: "Conditional logic",
+          type: "condition",
         },
         id: "3",
       },
       {
         config: {
-          label: "Node Type 3",
-          type: "condition",
-        },
-        id: "3.5",
-      },
-      {
-        config: {
-          label: "Node Type 2",
-          type: "action",
+          label: "Step 3",
+          type: "transform",
         },
         id: "4",
       },
       {
         config: {
-          label: "Node Type 2",
-          type: "action",
+          label: "Step 4",
+          type: "transform",
         },
-        id: "4.5",
+        id: "5",
       },
     ],
   };

@@ -1,37 +1,33 @@
 import * as React from "react";
 
-import { endPointStyles, nodeWrapperStyles } from "./NodeType1";
+import { endPointStyles, nodeStyles, nodeWrapperStyles } from "../styles";
 
 import {DefaultNode} from "react-dag";
 import { css } from "glamor";
 import { getSettings } from '../../../resources/dag-settings'
-import { theme } from "../styles";
+import { connect } from "react-redux";
+import { showWorkflowNodePropertiesActionHandler } from "../../../redux/actions";
 
-const nodeStyles = css({
-  background: "white",
-  border: `2px solid ${theme.main.colors.yellow}`,
-  cursor: "pointer",
-  height: "105px",
-  left: "200px",
-  position: "absolute",
-  top: "200px",
-  width: "105px",
-});
 
 const modEndPointStyles = css({
   "&.bottom": {
     height: "15px",
-    left: "45px",
-    top: "100px",
+    left: "100px",
+    top: "90px",
   },
   "&.right": {
-    height: "15px",
-    left: "95px",
+    height: "10px",
+    left: "190px",
     top: "35px",
   },
 });
 
-export default class NodeType3 extends DefaultNode {
+class ConditionNode extends DefaultNode {
+
+  constructor(props) {
+    super(props);
+    this.showNodeProps = this.showNodeProps.bind(this);
+  }
   rightEndpointRef;
   bottomEndpointRef;
 
@@ -73,6 +69,11 @@ export default class NodeType3 extends DefaultNode {
     }
   }
 
+  showNodeProps() {
+    console.log("called showNodeProps with id: ".concat(this.props.id));
+      showWorkflowNodePropertiesActionHandler(this.props.id);
+    };
+
   render() {
     const config = this.props.config;
     let style = {};
@@ -81,6 +82,7 @@ export default class NodeType3 extends DefaultNode {
     }
     return (
       <div
+      onClick={this.showNodeProps}
         id={this.props.id}
         className={`${nodeStyles}`}
         style={style}
@@ -102,3 +104,17 @@ export default class NodeType3 extends DefaultNode {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  console.log("dispatch");
+  return {
+    currentNodeId: nodeId => {
+       dispatch(showWorkflowNodePropertiesActionHandler(nodeId))
+    }
+  };
+};
+
+export default connect(
+  null,
+  { mapDispatchToProps }
+)(ConditionNode);

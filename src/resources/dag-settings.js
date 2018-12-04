@@ -74,7 +74,7 @@ export const sinkSettings = {
 };
 export const conditionRightEndpoint = {
   overlays: [
-    ["Label", { id: "yesLabel", label: "Yes", location: [0.5, -0.55] }],
+    ["Label", { id: "yesLabel", label: "Yes", location: [2, -0.55] }],
   ],
   ...sourceSettings,
 };
@@ -87,7 +87,7 @@ export const conditionBottomEndpoint = {
       {
         id: "noLabel",
         label: "No",
-        location: [0.5, -0.85],
+        location: [0.5, 2],
       },
     ],
   ],
