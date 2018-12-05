@@ -19,9 +19,6 @@ class FormDesigner extends Component {
 
   componentDidMount() {
 
-    fetch(apiUrl.url.concat('getModelsByTypeId/2'))
-    .then(res => res.json())
-    .then(data => this.setState({data})); 
    
   }
 }

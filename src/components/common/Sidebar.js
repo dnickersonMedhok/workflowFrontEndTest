@@ -27,7 +27,7 @@ class Sidebar extends Component {
     },
     {
       path: "/workflowDesigner",
-      sidebar: () => <WorkflowSidebar setWorkflowJson={this.props.setWorkflowJson} getWorkflowJson={this.props.getWorkflowJson}
+      sidebar: () => <WorkflowSidebar setWorkflowModel={this.props.setWorkflowModel} getWorkflowModel={this.props.getWorkflowModel}
         setNode={this.props.setNode } getNode={this.props.getNode}/>
     }
   ];

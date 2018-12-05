@@ -2,8 +2,7 @@ import Home from './components/home/Home'
 import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
-//TODO this will have to be created dynamically
-import { data } from "./components/workflowComponents/dagComponents/data";
+
 
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -21,8 +20,8 @@ class App extends Component {
       formJson: thisJson,
       entityModel: null,
       workflowModel: null,
-      connections: data.connections,
-      nodes: data.nodes,
+      connections: null,
+      nodes: null,
     };
 
     this.setFormJson = this.setFormJson.bind(this);
@@ -94,7 +93,7 @@ render() {
     },
     {
       path: "/workflowDesigner",
-      main: () => <WorkflowDesigner setWorkflowJson={this.setWorkflowJson} getWorkflowJson={this.getWorkflowJson}
+      main: () => <WorkflowDesigner setWorkflowModel={this.setWorkflowModel} getWorkflowModel={this.getWorkflowModel}
         getNode={this.getNode}/>
     }
   ];
