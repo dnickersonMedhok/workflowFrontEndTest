@@ -80,6 +80,24 @@ span.input-group-addon {
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 20px;
 }
+
+
+.myDropdown {
+  display: inline-block;
+  background-color: #dddddd; 
+  color: #000000
+}
+
+.dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: #dddddd; 
+  color: #000000;
+}
+
+.dropdown--active .dropdown__content {
+  display: block;
+}
 /*
  * 
  * burger menu styles section

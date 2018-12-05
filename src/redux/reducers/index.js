@@ -7,7 +7,6 @@ const initialState = {
     }
   
   const rootReducer = (state = initialState, action) => {
-      console.log("nodeReducer")
       if(action.type === SHOW_WORKFLOW_NODE_PROPERTIES) {
         state.currentNodeId = action.payload;
       }

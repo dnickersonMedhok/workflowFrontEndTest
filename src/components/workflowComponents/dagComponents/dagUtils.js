@@ -23,10 +23,14 @@ export const buttonPanelStyles = css({
 
   export const nodeType1Styles = css({
     backgroundColor: theme.main.colors.blueGreen,
+    height: "60px",
+    width: "100px"
   });
   
   export const nodeType2Styles = css({
     backgroundColor: theme.main.colors.teal,
+    height: "60px",
+    width: "100px"
   });
   
   export const nodeType3Styles = css({

@@ -32,6 +32,7 @@ class App extends Component {
     this.getWorkflowModel = this.getWorkflowModel.bind(this);
     this.setNode = this.setNode.bind(this);
     this.getNode = this.getNode.bind(this);
+    this.setConnections = this.setConnections(this);
   }
 
   setFormJson(newFormJson){
@@ -65,10 +66,41 @@ class App extends Component {
   }
 
   setNode(newNode){
-    this.setState(() => ({
-      nodes: [...this.state.nodes, newNode],
+    let thisWorkflowModel = this.state.workflowModel;
+    if(thisWorkflowModel) {
+      let dagModel = JSON.parse(thisWorkflowModel.content);
+      dagModel['nodes'].push(newNode);
+      thisWorkflowModel.content = JSON.stringify(dagModel);
+    } else {
+      thisWorkflowModel = {
+        modelTypeId: 3,
+        content: JSON.stringify({
+          connections: [],
+          nodes: [newNode]
+        })
+      };
+    }
+    this.setState({workflowModel: thisWorkflowModel});
+  }
 
-    }));
+  setConnections(connections) {
+    let thisWorkflowModel = this.state.workflowModel;
+    if(thisWorkflowModel) {
+      let dagModel = JSON.parse(thisWorkflowModel.content);
+      dagModel.connections = connections;
+      thisWorkflowModel.content = JSON.stringify(dagModel);
+    } else {
+      thisWorkflowModel = {
+        modelTypeId: 3,
+        content: JSON.stringify({
+          connections: connections,
+          nodes: []
+        })
+      };
+    }
+    this.setState({workflowModel: thisWorkflowModel});
+
+
   }
 
   getNode(){
@@ -94,7 +126,7 @@ render() {
     {
       path: "/workflowDesigner",
       main: () => <WorkflowDesigner setWorkflowModel={this.setWorkflowModel} getWorkflowModel={this.getWorkflowModel}
-        getNode={this.getNode}/>
+        getNode={this.getNode} setConnections={this.setConnections}/>
     }
   ];
   return (

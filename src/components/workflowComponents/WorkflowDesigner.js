@@ -47,47 +47,6 @@ const typeToComponentMap = {
 
 const getComponent = (type) =>
   typeToComponentMap[type] ? typeToComponentMap[type] : DefaultNode;
-// const getLayout = (nodes, connections, separation = 200) => {
-//   const graph = new dagre.graphlib.Graph();
-//   graph.setGraph({
-//     marginx: 0,
-//     marginy: 0,
-//     nodesep: 90,
-//     rankdir: "LR",
-//     ranker: "longest-path",
-//     ranksep: separation,
-//   });
-//   graph.setDefaultEdgeLabel(() => ({}));
-
-//   nodes.forEach(node => {
-//     const id = node.id;
-//     graph.setNode(id, { label: node.config ? node.config.label : "", width: 100, height: 100 });
-//   });
-
-//   connections.forEach(connection => {
-//     graph.setEdge(connection.sourceId, connection.targetId);
-//   });
-
-//   dagre.layout(graph);
-//   return graph;
-// };
-// const graphNodes = getLayout(this.state.workflowModel.nodes, this.state.workflowModel.connections);
-// let theseNodes = this.state.workflowModel.nodes.map(node => {
-//   const location = graphNodes._nodes[node.id];
-//   return {
-//     ...node,
-//     config: {
-//       ...node.config,
-//       style: {
-//         left: `${location.x}px`,
-//         top: `${location.y}px`,
-//       },
-//     },
-//   };
-// });
-// var workflowModel = {...this.state.workflowModel};
-// workflowModel.nodes = theseNodes;
-// this.setState({workflowModel});
 
 class WorkflowDesigner extends React.Component {
 
@@ -95,7 +54,7 @@ class WorkflowDesigner extends React.Component {
     super(props);
     this.getLayout = this.getLayout.bind(this);
     this.getReactDag = this.getReactDag.bind(this);
-
+    this.setConnections = this.setConnections.bind(this);
   }
   state = {
     zoom: .75,
@@ -112,7 +71,6 @@ class WorkflowDesigner extends React.Component {
 
   setWorkflow() {
     if(this.props.getWorkflowModel()) {
-      console.log("got a wf")
     }
     let wfm = this.props.getWorkflowModel();
     this.setState(() => ({ workflowModel: wfm }));
@@ -150,7 +108,6 @@ class WorkflowDesigner extends React.Component {
 
     if(wfm) {
       let dagModel= JSON.parse(wfm.content);
-      console.log(JSON.stringify(dagModel))
       const graphNodes = this.getLayout(dagModel.nodes, dagModel.connections);
       let theseNodes = dagModel.nodes.map(node => {
         const location = graphNodes._nodes[node.id];
@@ -190,7 +147,7 @@ class WorkflowDesigner extends React.Component {
           eventListeners={eventListeners}
           registerTypes={registerTypes}
           onChange={({ nodes, connections }) => {
-          this.setState({ nodes, connections }); // un-necessary cycle??
+          this.setState({ nodes, connections }); 
         }}
         zoom={this.state.zoom}
         >
@@ -200,8 +157,33 @@ class WorkflowDesigner extends React.Component {
         })}
         </ReactDAG>
     } else {
-      return <div />
+      return  <ReactDAG
+      className={`${dagWrapperStyles}`}
+      key="dag"
+      connections={{}}
+      nodes={{}}
+      jsPlumbSettings={defaultSettings}
+      connectionDecoders={[
+        transformConnectionDecoder,
+        conditionConnectionDecoder,
+      ]}
+      connectionEncoders={[
+        transformConnectionEncoder,
+        conditionConnectionEncoder,
+      ]}
+      eventListeners={eventListeners}
+      registerTypes={registerTypes}
+      onChange={({ nodes, connections }) => {
+      this.setState({ nodes, connections }); 
+    }}
+    zoom={this.state.zoom}
+    >
+    </ReactDAG>
     }
+  }
+
+  setConnections(connections) {
+    this.props.setConnections(connections);
   }
 
   render() {

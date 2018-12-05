@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { apiUrl } from '../../resources/apiUrl';
-import { buttonStyles, nodeType1Styles, nodeType2Styles, nodeType3Styles} from "./dagComponents/dagUtils"
+import { buttonStyles, nodeType1Styles, nodeType2Styles } from "./dagComponents/dagUtils"
+import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { Button } from 'react-bootstrap';
+import '../../css/App.css'
+
 
 /* tslint:disable */
 const uuidv4 = require("uuid/v4");
@@ -15,7 +19,23 @@ class WorkflowSidebar extends Component  {
           data: []
                 };
         this.handleClick = this.handleClick.bind(this);
+        this.save = this.save.bind(this);
       }
+
+      save() {
+        let thisWorkflowModel = this.props.getWorkflowModel();
+        if(thisWorkflowModel) {
+          fetch(apiUrl.url.concat('saveModel'), {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(thisWorkflowModel)
+          });
+        }
+      }
+
 
       addNode = (type) => {
         const generateNodeConfig = (t) => ({
@@ -32,41 +52,36 @@ class WorkflowSidebar extends Component  {
     return   (    <center><div key="button-panel">
     <button
       className={`${buttonStyles} ${nodeType1Styles}`}
-      onClick={this.addNode.bind(null, "transform")}
+      onClick={this.addNode.bind(null, "action")}
     >
-      Add Node Type 1
+      Add a step
     </button><br />
     <button
       className={`${buttonStyles} ${nodeType2Styles}`}
-      onClick={this.addNode.bind(null, "action")}
-    >
-      Add Node Type 2
-    </button><br />
-    <button
-      className={`${buttonStyles} ${nodeType3Styles}`}
       onClick={this.addNode.bind(null, "condition")}
     >
-      Add Node Type 3
-    </button>
-    <button
-      className={`${buttonStyles}`}
-      onClick={this.addNode.bind(null, "source")}
-    >
-      Add Node Type 4
-    </button>
-    <button
-      className={`${buttonStyles} ${nodeType1Styles}`}
-      onClick={this.addNode.bind(null, "sink")}
-    >
-      Add Node Type 5
-    </button><br /> 
-        Available workflow models:
-        {
-            this.state.data.map((item, key) => {
-                return <div><a href="true" key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a><br /></div> 
-            })
-        }
-            </div></center> );
+      Add a condition
+    </button><br />
+    <br />
+        <Dropdown className="myDropdown">      
+          <DropdownTrigger>Edit workflow model </DropdownTrigger>
+          <DropdownContent classNae="dropdown__content">
+            <ul>
+             {  
+              this.state.data.map((item, key) => {
+                 return <li><a href="true" key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a></li> 
+             })
+            } 
+         </ul>
+          </DropdownContent>
+        </Dropdown>
+        <Button onClick={ () => this.save() }>
+          Save
+        </Button>
+
+
+            </div>
+            </center> );
  }
 
  handleClick(item, e) {

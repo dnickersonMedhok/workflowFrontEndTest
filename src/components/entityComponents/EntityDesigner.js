@@ -137,7 +137,7 @@ class EntityDesigner extends Component {
 
     jsonObj["content"] = JSON.stringify(fieldsObj);
   
-    fetch(apiUrl.url.concat('saveEntityModel'), {
+    fetch(apiUrl.url.concat('saveModel'), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
