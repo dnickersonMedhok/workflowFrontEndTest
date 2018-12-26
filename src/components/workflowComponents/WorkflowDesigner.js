@@ -205,7 +205,7 @@ class WorkflowDesigner extends React.Component {
           Zoom out
         </button>
       </div>,
-            <div className="workflow-rightBar">
+            <div className="rightBar">
             workflow sidebar <br />
                   currentNodeId: { this.props.currentNodeId.nodeId } 
 

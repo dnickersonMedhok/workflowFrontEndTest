@@ -34,6 +34,7 @@ class App extends Component {
     this.getEntityFields = this.getEntityFields.bind(this);
     this.setSelectedFields = this.setSelectedFields.bind(this);
     this.getSelectedFields = this.getSelectedFields.bind(this);
+    this.setFormName = this.setFormName.bind(this);
     this.setEntityModel = this.setEntityModel.bind(this);
     this.getEntityModel = this.getEntityModel.bind(this);
     this.setWorkflowModel = this.setWorkflowModel.bind(this);
@@ -71,6 +72,16 @@ class App extends Component {
 
   getSelectedFields() {
     return this.state.selectedFields;
+  }
+
+  setFormName(newFormName) {
+    let stateFormJson = this.state.formJson;
+    let thisSubSection = stateFormJson.sections[0].subsections[0];
+    thisSubSection.title = newFormName;
+    stateFormJson.sections[0].subsections[0] = thisSubSection;
+    this.setState(() => ({
+      formJson: stateFormJson
+    }))
   }
 
   setEntityModel(newEntityModel){
@@ -152,7 +163,7 @@ render() {
       path: "/formDesigner",
       main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} 
       getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
-      getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields}/>
+      getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields} />
     },
     {
       path: "/workflowDesigner",
@@ -169,7 +180,8 @@ render() {
                 setFormJson={this.setFormJson} getFormJson={this.getFormJson} setWorkflowModel={this.setWorkflowModel} 
                 getWorkflowModel={this.getWorkflowModel} getNode={this.getNode} setNode={this.setNode} 
                 getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
-                getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields}/>
+                getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields}
+                setFormName={this.setFormName} />
         </Menu>
         <div id="page-wrap" style={{ flex: 1, padding: "10px" }}>
           {routes.map((route, index) => (
@@ -198,8 +210,7 @@ const templateFormJson =         {
       subsections: [
         {
           id: "subsection_1",
-          title: "Test form",
-          subtitle: "This is just a test form.",
+          title: "",
           fields: []
         }
       ]

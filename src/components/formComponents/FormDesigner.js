@@ -12,9 +12,14 @@ class FormDesigner extends Component {
   }
 
   render() {
-    return (<div className="App">
-              <h1><b>The Form Designer</b></h1> 
-              <center><FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/></center>
+    return (<div>
+              <div className="App">
+                <h1><b>The Form Designer</b></h1> 
+                <center><FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/></center>
+              </div>,
+              <div className="rightBar">
+                form name: { this.props.getFormJson().sections[0].subsections[0].title } 
+              </div>
             </div>
 );
   }

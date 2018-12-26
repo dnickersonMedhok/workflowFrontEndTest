@@ -17,10 +17,23 @@ class FormSidebar extends Component  {
         this.state = {
             entities: [],
             data: [],
-            formModels: []
+            formModels: [],
+            formName: ""
         };
         this.handleEntityClick = this.handleEntityClick.bind(this);
+        this.handleFormNameChange = this.handleFormNameChange.bind(this);
+        this.handleFormNameSubmit = this.handleFormNameSubmit.bind(this);
       }
+
+      handleFormNameChange(event) {
+          this.setState({formName: event.target.value});
+      }
+
+      handleFormNameSubmit(event) {
+        this.props.setFormName(this.state.formName);
+        event.preventDefault();
+
+    }
 
     // Get all associated fields for the
     // given entity that has been chosen (item)
@@ -38,6 +51,14 @@ class FormSidebar extends Component  {
 
  render() {
     return   (<div>
+      <form  onSubmit={this.handleFormNameSubmit}>
+        <label>
+          Form name:
+          <input type="text" value={this.state.formName} 
+           onChange={this.handleFormNameChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>        
         {
             this.props.getEntityFields().map((item, thisKey) =>  { return <div><FieldElement key={thisKey} setFormJson={this.props.setFormJson} 
                 getFormJson={this.props.getFormJson} getEntityFields={this.props.getEntityFields} setEntityFields={this.props.setEntityFields} 
@@ -52,7 +73,7 @@ class FormSidebar extends Component  {
             <ul>
              {  
               this.state.entities.map((item, thisKey) => {
-                 return <li><a href="true" key={thisKey} onClick={(e) => this.handleEntityClick(item, e)}>{item.name}</a></li> 
+                 return <li><a href key={thisKey} onClick={(e) => this.handleEntityClick(item, e)}>{item.name}</a></li> 
              })
             } 
          </ul>
