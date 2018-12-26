@@ -1,0 +1,1 @@
+export var typesEnum = Object.freeze({"entity":1, "form":2, "workflow":3})

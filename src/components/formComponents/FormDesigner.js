@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import FormPreview from './formPreview';
+
 
 class FormDesigner extends Component { 
   constructor(props) {
@@ -12,6 +14,7 @@ class FormDesigner extends Component {
   render() {
     return (<div className="App">
               <h1><b>The Form Designer</b></h1> 
+              <center><FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/></center>
             </div>
 );
   }

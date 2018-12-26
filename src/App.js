@@ -17,15 +17,23 @@ class App extends Component {
     super(props);
 
     this.state = {
-      formJson: thisJson,
+      formJson: templateFormJson,
       entityModel: null,
       workflowModel: null,
       connections: null,
       nodes: null,
+      //the fields shown on the sidebar
+      entityFields: [],
+      //the fields selected for the form
+      selectedFields: []
     };
 
     this.setFormJson = this.setFormJson.bind(this);
     this.getFormJson = this.getFormJson.bind(this);
+    this.setEntityFields = this.setEntityFields.bind(this);
+    this.getEntityFields = this.getEntityFields.bind(this);
+    this.setSelectedFields = this.setSelectedFields.bind(this);
+    this.getSelectedFields = this.getSelectedFields.bind(this);
     this.setEntityModel = this.setEntityModel.bind(this);
     this.getEntityModel = this.getEntityModel.bind(this);
     this.setWorkflowModel = this.setWorkflowModel.bind(this);
@@ -43,6 +51,26 @@ class App extends Component {
 
   getFormJson() {
     return this.state.formJson;
+  }
+
+  setEntityFields(entityFields){
+    this.setState((state, props) => ({
+      entityFields: entityFields
+    }));
+  }
+
+  getEntityFields() {
+    return this.state.entityFields;
+  }
+
+  setSelectedFields(newSelectedFields){
+    this.setState((state, props) => ({
+      selectedFields: newSelectedFields
+    }));
+  }
+
+  getSelectedFields() {
+    return this.state.selectedFields;
   }
 
   setEntityModel(newEntityModel){
@@ -107,6 +135,7 @@ class App extends Component {
       return this.state.nodes
   }
 
+
 render() {
 
   const routes = [
@@ -121,7 +150,9 @@ render() {
     },
     {
       path: "/formDesigner",
-      main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} />
+      main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} 
+      getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
+      getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields}/>
     },
     {
       path: "/workflowDesigner",
@@ -134,9 +165,11 @@ render() {
       <div id="outer-container">
         <Menu width={ '15%' } isOpen={ true } noOverlay class="bm-menu" pageWrapId={ "page-wrap" }>
 
-          <Sidebar   setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} 
+          <Sidebar  key="key"  setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} 
                 setFormJson={this.setFormJson} getFormJson={this.getFormJson} setWorkflowModel={this.setWorkflowModel} 
-                getWorkflowModel={this.getWorkflowModel} getNode={this.getNode} setNode={this.setNode}  />
+                getWorkflowModel={this.getWorkflowModel} getNode={this.getNode} setNode={this.setNode} 
+                getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
+                getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields}/>
         </Menu>
         <div id="page-wrap" style={{ flex: 1, padding: "10px" }}>
           {routes.map((route, index) => (
@@ -154,8 +187,8 @@ render() {
 }
 }
 
-//hard coded form model for now
-const thisJson =         {
+
+const templateFormJson =         {
   id: "login_form",
   title: "Welcome to Foo!",
   sections: [
@@ -167,48 +200,69 @@ const thisJson =         {
           id: "subsection_1",
           title: "Test form",
           subtitle: "This is just a test form.",
-          fields: [
-            {
-              id: "user_name",
-              title: "field 1",
-              type: "string"
-            },
-            {
-              id: "user_pass",
-              title: "field 2",
-              type: "string"
-            },
-            {
-              id: "remember_me",
-              title: "just some random checkbox",
-              type: "boolean"
-            },
-          {
-            "id": "bool3",
-            "type": "boolean",
-            "title": "just some random radio buttons",
-            "inline": false,
-            "options": [
-              {
-                "title": "Yes"
-              },
-              {
-                "title": "No"
-              }
-            ]
-          }
-          ]
+          fields: []
         }
       ]
     }
-  ],
-  decorators: {
-    "user_pass": {
-      component: {
-        type: "password"
-      }
-    }
-  }        
+  ]       
 };
+
+
+//hard coded form model for now
+// const thisJson =         {
+//   id: "login_form",
+//   title: "Welcome to Foo!",
+//   sections: [
+//     {
+//       id: "section_1",
+//       title: "Login Section",
+//       subsections: [
+//         {
+//           id: "subsection_1",
+//           title: "Test form",
+//           subtitle: "This is just a test form.",
+//           fields: [
+//             {
+//               id: "user_name",
+//               title: "field 1",
+//               type: "string"
+//             },
+//             {
+//               id: "user_pass",
+//               title: "field 2",
+//               type: "string"
+//             },
+//             {
+//               id: "remember_me",
+//               title: "just some random checkbox",
+//               type: "boolean"
+//             },
+//           {
+//             "id": "bool3",
+//             "type": "boolean",
+//             "title": "just some random radio buttons",
+//             "inline": false,
+//             "options": [
+//               {
+//                 "title": "Yes"
+//               },
+//               {
+//                 "title": "No"
+//               }
+//             ]
+//           }
+//           ]
+//         }
+//       ]
+//     }
+//   ],
+//   decorators: {
+//     "user_pass": {
+//       component: {
+//         type: "password"
+//       }
+//     }
+//   }        
+// };
 
 export default App;

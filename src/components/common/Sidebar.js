@@ -23,7 +23,9 @@ class Sidebar extends Component {
     },
     {
       path: "/formDesigner",
-      sidebar: () => <FormSidebar setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/>
+      sidebar: () => <FormSidebar setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}
+      getEntityFields={this.props.getEntityFields} setEntityFields={this.props.setEntityFields} 
+      getSelectedFields={this.props.getSelectedFields} setSelectedFields={this.props.setSelectedFields}/>
     },
     {
       path: "/workflowDesigner",
@@ -31,6 +33,7 @@ class Sidebar extends Component {
         setNode={this.props.setNode } getNode={this.props.getNode}/>
     }
   ];
+
     return (<div>
       
         <ul style={{ listStyleType: "none", padding: 0 }}>

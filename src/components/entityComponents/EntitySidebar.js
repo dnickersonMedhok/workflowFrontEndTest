@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { apiUrl } from '../../resources/apiUrl';
+import { typesEnum } from '../../utilities/Constants'
 
 class EntitySidebar extends Component  {
  
@@ -8,30 +9,33 @@ class EntitySidebar extends Component  {
     
         this.state = {
           data: []        };
-        this.handleClick = this.handleClick.bind(this);
       }
  
  render() {
-    return   (<div>
-              Available entity models:
-                    {
-                        this.state.data.map((item, key) => {
-                           return <div><a href="true" key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a><br /></div> 
-                        })
-                    }
-            </div>);
- }
-
- handleClick(item, e) {
+  const handleClick = (item, e) => {
     e.preventDefault();
     this.props.setEntityModel(item);
   }
 
- componentDidMount() {
+  const getFields = () => {
+   return  <div>
+              Available entity models:
+                    {
+                        this.state.data.map((item, i) => {
+                           return <div key ={i} ><a href="true" onClick={(e) => handleClick(item, e)}>{item.name}</a><br /></div> 
+                        })
+                    }
+            </div>
+  }
+    return   (getFields())
+  }
 
-    fetch(apiUrl.url.concat('getModelsByTypeId/1'))
+
+
+ componentDidMount() {
+    fetch(apiUrl.url.concat('getModelsByTypeId/'.concat(typesEnum.entity)))
     .then(res => res.json())
-    .then(data => this.setState({data})); 
+    .then(thisData => this.setState({data: thisData})); 
    
   }
 }

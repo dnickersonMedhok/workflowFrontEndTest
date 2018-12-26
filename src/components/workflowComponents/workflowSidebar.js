@@ -4,6 +4,7 @@ import { buttonStyles, nodeType1Styles, nodeType2Styles } from "./dagComponents/
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { Button } from 'react-bootstrap';
 import '../../css/App.css'
+import { typesEnum } from '../../utilities/Constants'
 
 
 /* tslint:disable */
@@ -16,10 +17,26 @@ class WorkflowSidebar extends Component  {
         super(props);
     
         this.state = {
-          data: []
-                };
+          data: [],
+          entities: [],
+          highestStepId: 0,
+          formModels: []
+        };
         this.handleClick = this.handleClick.bind(this);
         this.save = this.save.bind(this);
+        this.handleEntityClick = this.handleEntityClick.bind(this);
+        this.addNode = this.addNode.bind(this);
+        this.getAddCondition = this.getAddCondition.bind(this);
+      }
+
+      // Get all associated form models for the
+      // given entity that has been chosen (item) 
+      handleEntityClick(item, e) {
+        fetch(apiUrl.url.concat('getFormModelsByEntityId/').concat(item.id))
+        .then(res => res.json())
+        .then(theseFormModels => this.setState({
+          formModels: theseFormModels
+        }));
       }
 
       save() {
@@ -36,45 +53,85 @@ class WorkflowSidebar extends Component  {
         }
       }
 
+      getAddCondition() {
+        if(this.state.formModels.length > 0) {
+          return     <button
+          className={`${buttonStyles} ${nodeType2Styles}`}
+          onClick={this.addNode.bind(null, "condition")}
+        >
+          Add a condition
+        </button>
+        } 
+          return <div></div>
+        
+      }
 
-      addNode = (type) => {
-        const generateNodeConfig = (t) => ({
+      addNode = (type, formName) => {
+        console.log("state.hightestStepId ".concat(this.state.highestStepId))
+        const generateNodeConfig = (t, thisLabel) => ({
           config: {
-            label: `Node Type: ${type} #${Math.ceil(Math.random() * 100)}`,
+            label: thisLabel,
             type: t,
           },
           id: uuidv4(),
         });
-        this.props.setNode(generateNodeConfig(type));
+        if(type.localeCompare("condition") !== 0) {
+          let label = `Step ${this.state.highestStepId + 1} ${formName}`;
+          this.props.setNode(generateNodeConfig(type, label));
+          this.setState({ highestStepId: this.state.highestStepId + 1 });
+        } else {
+          this.props.setNode(generateNodeConfig(type, "conditional logic"))
+        }
       };
  
  render() {
     return   (    <center><div key="button-panel">
-    <button
-      className={`${buttonStyles} ${nodeType1Styles}`}
-      onClick={this.addNode.bind(null, "action")}
-    >
-      Add a step
-    </button><br />
-    <button
-      className={`${buttonStyles} ${nodeType2Styles}`}
-      onClick={this.addNode.bind(null, "condition")}
-    >
-      Add a condition
-    </button><br />
-    <br />
+
+  { this.state.formModels.map((item, key) => { 
+      return     <button
+        className={`${buttonStyles} ${nodeType1Styles}`} key={key}
+        onClick={this.addNode.bind(null, "action", item.name)}> {item.name}
+        </button>
+      })
+  }
+  <br />
+
+    
+    { this.getAddCondition() }
+    
+
+
         <Dropdown className="myDropdown">      
-          <DropdownTrigger>Edit workflow model </DropdownTrigger>
-          <DropdownContent classNae="dropdown__content">
+          <DropdownTrigger> New </DropdownTrigger>
+          <DropdownContent className="dropdown__content">
             <ul>
              {  
-              this.state.data.map((item, key) => {
-                 return <li><a href="true" key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a></li> 
+              this.state.entities.map((item, key) => {
+                 return <li><a href key={key} onClick={(e) => this.handleEntityClick(item, e)}>{item.name}</a></li> 
              })
             } 
          </ul>
           </DropdownContent>
         </Dropdown>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
+        <Dropdown className="myDropdown">      
+          <DropdownTrigger> Edit </DropdownTrigger>
+          <DropdownContent className="dropdown__content">
+            <ul>
+             {  
+              this.state.data.map((item, key) => {
+                 return <li><a href key={key} onClick={(e) => this.handleClick(item, e)}>{item.name}</a></li> 
+             })
+            } 
+         </ul>
+          </DropdownContent>
+        </Dropdown>
+        <br /><br />
         <Button onClick={ () => this.save() }>
           Save
         </Button>
@@ -89,11 +146,23 @@ class WorkflowSidebar extends Component  {
     this.props.setWorkflowModel(item);
   }
 
- componentDidMount() {
-    fetch(apiUrl.url.concat('getModelsByTypeId/3'))
-    .then(res => res.json())
-    .then(data => this.setState({data})); 
+  componentDidMount() {
+    if(this.state.data.length === 0) {
+      console.log("fetching")
+   fetch(apiUrl.url.concat('getModelsByTypeId/').concat(typesEnum.workflow))
+     .then(res => res.json())
+     .then(thisData => this.setState({
+       data: thisData
+     }));
+
+   fetch(apiUrl.url.concat('getModelsByTypeId/').concat(typesEnum.entity))
+     .then(res => res.json())
+     .then(theseEntities => this.setState({
+       entities: theseEntities
+     }));
+    }
+
   }
-}
+ }
 
 export default WorkflowSidebar
