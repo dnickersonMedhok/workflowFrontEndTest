@@ -8,29 +8,33 @@ class EntitySidebar extends Component  {
         super(props);
     
         this.state = {
-          data: []        };
+          data: []        
+        };
+        this.getFields = this.getFields.bind(this);
+        this.handleClick = this.handleClick.bind(this);
       }
- 
- render() {
-  const handleClick = (item, e) => {
+
+  getFields = () => {
+    if(this.state.data) {
+      return  <div>
+        Available entity models:
+        {
+          this.state.data.map((item, i) => {
+            return <div key ={i} ><a href="true" onClick={(e) => this.handleClick(item, e)}>{item.name}</a><br /></div> 
+          })
+        }
+        </div>
+    }
+  }
+
+  handleClick = (item, e) => {
     e.preventDefault();
     this.props.setEntityModel(item);
   }
 
-  const getFields = () => {
-   return  <div>
-              Available entity models:
-                    {
-                        this.state.data.map((item, i) => {
-                           return <div key ={i} ><a href="true" onClick={(e) => handleClick(item, e)}>{item.name}</a><br /></div> 
-                        })
-                    }
-            </div>
+ render() {
+    return   (this.getFields())
   }
-    return   (getFields())
-  }
-
-
 
  componentDidMount() {
     fetch(apiUrl.url.concat('getModelsByTypeId/'.concat(typesEnum.entity)))
