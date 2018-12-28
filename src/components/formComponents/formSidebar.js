@@ -6,7 +6,7 @@ import { apiUrl } from '../../resources/apiUrl';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import '../../css/App.css'
 import { typesEnum } from '../../utilities/Constants'
-import  FieldElement  from './fieldElement'
+import  FieldElementButton  from './fieldElementButton'
 
 
 class FormSidebar extends Component  {
@@ -44,7 +44,11 @@ class FormSidebar extends Component  {
         let stateFieldArray = [];
 
         for (var i = 0; i < fieldArray.length; i++) {
-            stateFieldArray.push(fieldArray[i].fieldName);
+            let fieldObj = {
+                fieldName: fieldArray[i].fieldName,
+                fieldType: fieldArray[i].fieldType
+            }
+            stateFieldArray.push(fieldObj);
         }
         this.props.setEntityFields(stateFieldArray);
       }
@@ -60,9 +64,10 @@ class FormSidebar extends Component  {
         <input type="submit" value="Submit" />
       </form>        
         {
-            this.props.getEntityFields().map((item, thisKey) =>  { return <div><FieldElement key={thisKey} setFormJson={this.props.setFormJson} 
+            this.props.getEntityFields().map((item, thisKey) =>  { return <div><FieldElementButton key={thisKey} setFormJson={this.props.setFormJson} 
                 getFormJson={this.props.getFormJson} getEntityFields={this.props.getEntityFields} setEntityFields={this.props.setEntityFields} 
-                getSelectedFields={this.props.getSelectedFields} setSelectedFields={this.props.setSelectedFields} name={item} /><br /></div> })
+                getSelectedFields={this.props.getSelectedFields} setSelectedFields={this.props.setSelectedFields} name={item.fieldName} 
+                type={item.fieldType}/><br /></div> })
         }
 
         <br />
@@ -89,7 +94,7 @@ class FormSidebar extends Component  {
                     })
                     }
                 </ul>
-        <Popup trigger={<button> preview</button>} position="bottom left">
+        <Popup className="model-dialog" trigger={<button> preview</button>} position="top right">
             <FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/>
         </Popup>
   </div>);

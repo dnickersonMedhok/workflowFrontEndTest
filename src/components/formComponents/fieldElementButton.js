@@ -1,10 +1,7 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 import '../../css/App.css'
 
-
-class FieldElement extends Component {
+class FieldElementButton extends Component {
   constructor(props) {
     super(props);
 
@@ -17,15 +14,20 @@ class FieldElement extends Component {
               onClick = {this.handleClick} >
               {this.props.name} 
           </button>
-
-
   }
-
+//Add this field to the global formJson
   handleClick() {
+    var thisType;
+    if(this.props.type === "text") {
+      thisType = "string";
+    } else if (this.props.type === "boolean") {
+      thisType = "boolean"
+    }
+
     let thisField = {
       id: this.props.name,
       title: this.props.name,
-      type: "string"
+      type: thisType
     };
     let formJson = this.props.getFormJson();
     if(formJson) {
@@ -37,4 +39,4 @@ class FieldElement extends Component {
   }
 }
 
-export default FieldElement
+export default FieldElementButton

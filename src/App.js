@@ -3,7 +3,6 @@ import EntityDesigner from './components/entityComponents/EntityDesigner'
 import FormDesigner from './components/formComponents/FormDesigner'
 import WorkflowDesigner from './components/workflowComponents/WorkflowDesigner'
 
-
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { push as Menu } from 'react-burger-menu'
@@ -25,7 +24,9 @@ class App extends Component {
       //the fields shown on the sidebar
       entityFields: [],
       //the fields selected for the form
-      selectedFields: []
+      selectedFields: [],
+      selectedFieldPreview: null,
+      menuOpen: true
     };
 
     this.setFormJson = this.setFormJson.bind(this);
@@ -41,7 +42,22 @@ class App extends Component {
     this.getWorkflowModel = this.getWorkflowModel.bind(this);
     this.setNode = this.setNode.bind(this);
     this.getNode = this.getNode.bind(this);
-    this.setConnections = this.setConnections(this);
+    this.setConnections = this.setConnections.bind(this);
+    this.setSelectedFieldPreview = this.setSelectedFieldPreview.bind(this);
+    this.getSelectedFieldPreview = this.getSelectedFieldPreview.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
+  }
+
+  closeMenu() {
+    this.setState({menuOpen: false});
+  }
+
+  setSelectedFieldPreview(thisSelectedField) {
+    this.setState({selectedFieldPreview: thisSelectedField});
+  }
+
+  getSelectedFieldPreview() {
+    return this.state.selectedFieldPreview
   }
 
   setFormJson(newFormJson){
@@ -162,8 +178,10 @@ render() {
     {
       path: "/formDesigner",
       main: () => <FormDesigner setFormJson={this.setFormJson} getFormJson={this.getFormJson} 
-      getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
-      getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields} />
+        getEntityFields={this.getEntityFields} setEntityFields={this.setEntityFields} 
+        getSelectedFields={this.getSelectedFields} setSelectedFields={this.setSelectedFields} 
+        getSelectedFieldPreview={this.getSelectedFieldPreview} setSelectedFieldPreview={this.setSelectedFieldPreview}
+        closeMenu={this.closeMenu}/>
     },
     {
       path: "/workflowDesigner",
@@ -174,7 +192,7 @@ render() {
   return (
     <Router>
       <div id="outer-container">
-        <Menu width={ '15%' } isOpen={ true } noOverlay class="bm-menu" pageWrapId={ "page-wrap" }>
+        <Menu width={ '15%' } isOpen={ this.state.menuOpen } noOverlay class="bm-menu" pageWrapId={ "page-wrap" }>
 
           <Sidebar  key="key"  setEntityModel={this.setEntityModel} getEntityModel={this.getEntityModel} 
                 setFormJson={this.setFormJson} getFormJson={this.getFormJson} setWorkflowModel={this.setWorkflowModel} 

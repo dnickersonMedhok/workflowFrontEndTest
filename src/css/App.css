@@ -79,6 +79,24 @@ span.input-group-addon {
   width: 50px !important;
 }
 
+.formElementDesigner {
+  width: 50%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.formElementPreview {
+  width: 50%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+}
 
 .rightBar {
   height: 100%; /* Full-height: remove this if you want "auto" height */
