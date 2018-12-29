@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { apiUrl } from '../../resources/apiUrl';
 import { Button, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+//import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import Select from 'react-select'
+
 
 class EntityDesigner extends Component { 
   constructor(props) {
@@ -12,7 +14,8 @@ class EntityDesigner extends Component {
       inputs: [],
       fields: [],
       entityName: "",
-      id: null
+      id: null,
+      fieldTypeSelected: []
     };
 
     this.appendInput = this.appendInput.bind(this);
@@ -21,12 +24,14 @@ class EntityDesigner extends Component {
     this.handleFieldNameChange = this.handleFieldNameChange.bind(this);
     this.setEntity = this.setEntity.bind(this);
     this.getFieldsField = this.getFieldsField.bind(this);
-    this.handleFieldClick= this.handleFieldClick.bind(this);
+//    this.handleFieldClick= this.handleFieldClick.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
-  handleFieldClick(e) {
-    var thisFieldName = e.target.getAttribute("name");
-    var thisFieldType = e.target.getAttribute("type");
+  handleSelectChange(selectedOption) {
+    console.log(selectedOption)
+    var thisFieldName = selectedOption.value;
+    var thisFieldType = selectedOption.label;
     if(thisFieldName && thisFieldType) {
       let thisEntityModel = this.props.getEntityModel();
       if(thisEntityModel) {
@@ -35,8 +40,12 @@ class EntityDesigner extends Component {
         var found = false;
         for(var i = 0; i < thisEntity.fields.length && !found; i++) {
           if(thisFieldName === thisEntity.fields[i].fieldName) {
-            thisEntity.fields[i].fieldType = thisFieldType;
+            thisEntity.fields[i].fieldType = thisFieldType
+            let clonedFieldTypeSelected = this.state.fieldTypeSelected;
+            clonedFieldTypeSelected[i] = selectedOption;
+            this.setState({fieldTypeSelected: clonedFieldTypeSelected})
             found = true;
+            console.log("found in entity model")
           }
         }
         if(found) {
@@ -52,6 +61,7 @@ class EntityDesigner extends Component {
           if(thisFieldName === clonedFields[j].fieldValue) {
             clonedFields[j].fieldType = thisFieldType;
             found = true;
+            console.log("found in state.fields")
           }
         }
         if(found) {
@@ -66,24 +76,25 @@ class EntityDesigner extends Component {
     if(entityModel === null) {
       return "";
     }
-    let content = JSON.parse(entityModel.content)
-    const theseInputs = [];
-    const theseFields = [];
-    for(var i = 0; i < content.fields.length; i++) {
-      var newInput = `field${this.state.inputs.length + 1}`;
-      theseInputs.push(newInput);
-      var thisField = {
-        fieldName: newInput,
-        fieldValue:  content.fields[i].fieldName ,
-        fieldType: content.fields[i].fieldType
+    if(entityModel.content) {
+      let content = JSON.parse(entityModel.content)
+      const theseInputs = [];
+      const theseFields = [];
+      for(var i = 0; i < content.fields.length; i++) {
+        var newInput = `field${this.state.inputs.length + 1}`;
+        theseInputs.push(newInput);
+        var thisField = {
+          fieldName: newInput,
+          fieldValue:  content.fields[i].fieldName ,
+          fieldType: content.fields[i].fieldType
+        }
+        theseFields.push(thisField);
       }
-      theseFields.push(thisField);
+      this.setState({ id: entityModel.id });
+      this.setState({entityName: entityModel.name});
+      this.setState({ inputs: theseInputs });
+      this.setState({fields: theseFields});
     }
-    this.setState({ id: entityModel.id });
-    this.setState({entityName: entityModel.name});
-    this.setState({ inputs: theseInputs });
-    this.setState({fields: theseFields});
-
   }
 
   componentWillMount() {
@@ -92,20 +103,35 @@ class EntityDesigner extends Component {
 
   getFieldsField() {
     var theseFields = [];
+
+   // let selectedFieldType = [];
     for(var i = 0; i < this.state.fields.length; i++) {
-     theseFields[i] = <div>Field Name: <FormControl className="form-control" type={ this.state.fields[i].fieldType } name={this.state.fields[i].fieldName} 
+      const theseOptions = [
+        { label: 'text', value: this.state.fields[i].fieldValue },
+        { label: 'boolean', value: this.state.fields[i].fieldValue }
+      ];
+
+      // let found = false;
+      // for(var j = 0; j < theseOptions.length && !found; j++) {
+      //   console.log("comparing ".concat(theseOptions[j].label).concat(" with ").concat(this.state.fields[i].fieldType))
+      //   if(theseOptions[j].label === this.state.fields[i].fieldType) {
+      //     selectedFieldType.push(theseOptions[j]);
+      //     found = true;
+      //   }
+      // }
+     theseFields[i] = <div className="form-inline">Field Name: <FormControl className="form-control" type={ this.state.fields[i].fieldType } name={this.state.fields[i].fieldName} 
              value={ this.state.fields[i].fieldValue } key={i} id={i}
               onChange={this.handleFieldNameChange}/>
-              <Dropdown className="myDropdown">      
-                <DropdownTrigger>type</DropdownTrigger>
-                <DropdownContent className="dropdown__content">
-                  <ul>
-                    <li><a href name={this.state.fields[i].fieldValue} type="text" onClick={this.handleFieldClick}>text</a></li>
-                    <li><a href name={this.state.fields[i].fieldValue} type="boolean" onClick={this.handleFieldClick}>boolean</a></li>
-                  </ul>
-                </DropdownContent>
-            </Dropdown><br /><br /><br /><br /></div>
+
+      <Select className="myDropdown" options={theseOptions} onChange={this.handleSelectChange} placeholder="type" />
+            </div>
+      
     }
+    //TODO: react-select not showing what is selected, if we use state to control what
+    //is shown then it causes re-rendering and an infinite loop
+      //this.setState({fieldTypeSelected: selectedFieldType});
+    
+
     return theseFields;
   }
 
@@ -121,14 +147,9 @@ class EntityDesigner extends Component {
           <FormControl className="form-control" type="text" name="entityName" id="entityName" value={ this.state.entityName } onChange={this.handleEntityNameChange}  />
           <br/><br/>
 
-             {/* { this.state.fields.map((item, key) => { return <FormControl className="form-control" type={ item.fieldType } name={item.fieldName} 
-             value={ item.fieldValue } key={key} 
-              onChange={this.handleFieldNameChange}/>;
-            })}  */}
-
             { this.getFieldsField() }
 
-
+            <br /><br />
                <Button onClick={ () => this.appendInput() }>
                    Add Field
                </Button>
