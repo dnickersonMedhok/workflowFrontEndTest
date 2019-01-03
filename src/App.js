@@ -62,7 +62,7 @@ class App extends Component {
 
   setFormJson(newFormJson){
     this.setState((state, props) => ({
-      nodes: newFormJson
+      formJson: newFormJson
     }));
   }
 

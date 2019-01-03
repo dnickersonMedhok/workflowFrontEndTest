@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import FormElementDesigner  from './formElementDesigner'
+import Popup from "reactjs-popup";
+import FormPreview from './formPreview';
 
 class FormDesigner extends Component { 
   constructor(props) {
@@ -31,8 +33,10 @@ class FormDesigner extends Component {
               <div className="rightBar">
                 form name: { this.props.getFormJson().sections[0].subsections[0].title } 
                 { this.getSelectedField() } 
-
-
+              <br />
+              <Popup className="model-dialog" trigger={<button> preview</button>} position="bottom left">
+                <FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/>
+              </Popup>
               </div>
             </div>
     );
