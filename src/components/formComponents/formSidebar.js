@@ -6,7 +6,7 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import '../../css/App.css'
 import { typesEnum } from '../../utilities/Constants'
 import  FieldElementButton  from './fieldElementButton'
-
+import {templateFormJson } from '../../utilities/Constants'
 
 class FormSidebar extends Component  {
  
@@ -52,6 +52,8 @@ class FormSidebar extends Component  {
             stateFieldArray.push(fieldObj);
         }
         this.props.setEntityFields(stateFieldArray);
+        this.props.setFormJson(templateFormJson);
+
       }
 
       //Handle the selection of an existing from

@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { push as Menu } from 'react-burger-menu'
 import Sidebar from './components/common/Sidebar';
 import './css/App.css';
+import {templateFormJson } from './utilities/Constants'
 
 
 class App extends Component {
@@ -216,25 +217,6 @@ render() {
   );
 }
 }
-
-
-const templateFormJson =         {
-  id: "login_form",
-  title: "Welcome to Foo!",
-  sections: [
-    {
-      id: "section_1",
-      title: "Login Section",
-      subsections: [
-        {
-          id: "subsection_1",
-          title: "",
-          fields: []
-        }
-      ]
-    }
-  ]       
-};
 
 
 //hard coded form model for now
