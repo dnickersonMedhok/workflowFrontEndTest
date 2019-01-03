@@ -34,8 +34,9 @@ class FormDesigner extends Component {
                 form name: { this.props.getFormJson().sections[0].subsections[0].title } 
                 { this.getSelectedField() } 
               <br />
-              <Popup className="model-dialog" trigger={<button> preview</button>} position="bottom left">
+              <Popup className="modal-dialog" trigger={<button> preview</button>} modal closeOnDocumentClick><center>
                 <FormPreview setFormJson={this.props.setFormJson} getFormJson={this.props.getFormJson}/>
+                </center>
               </Popup>
               </div>
             </div>
