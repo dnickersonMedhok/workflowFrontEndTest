@@ -26,6 +26,7 @@ class EntityDesigner extends Component {
     this.getFieldsField = this.getFieldsField.bind(this);
 //    this.handleFieldClick= this.handleFieldClick.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.getDefaultOption = this.getDefaultOption.bind(this);
   }
 
   handleSelectChange(selectedOption) {
@@ -101,36 +102,37 @@ class EntityDesigner extends Component {
     this.setEntity();
   }
 
+  getDefaultOption(theseOptions, fieldType) {
+    let found = false;
+    var returnOption = null;
+    for(var j = 0; j < theseOptions.length && !found; j++) {
+      if(theseOptions[j].label === fieldType) {
+        returnOption = theseOptions[j];
+        found = true;
+      }
+    }
+    return returnOption
+  }
+
   getFieldsField() {
     var theseFields = [];
 
-   // let selectedFieldType = [];
     for(var i = 0; i < this.state.fields.length; i++) {
       const theseOptions = [
         { label: 'text', value: this.state.fields[i].fieldValue },
         { label: 'boolean', value: this.state.fields[i].fieldValue }
       ];
 
-      // let found = false;
-      // for(var j = 0; j < theseOptions.length && !found; j++) {
-      //   console.log("comparing ".concat(theseOptions[j].label).concat(" with ").concat(this.state.fields[i].fieldType))
-      //   if(theseOptions[j].label === this.state.fields[i].fieldType) {
-      //     selectedFieldType.push(theseOptions[j]);
-      //     found = true;
-      //   }
-      // }
+      let defaultOption = this.getDefaultOption(theseOptions, this.state.fields[i].fieldType);
+
      theseFields[i] = <div className="form-inline">Field Name: <FormControl className="form-control" type={ this.state.fields[i].fieldType } name={this.state.fields[i].fieldName} 
              value={ this.state.fields[i].fieldValue } key={i} id={i}
               onChange={this.handleFieldNameChange}/>
 
-      <Select className="myDropdown" options={theseOptions} onChange={this.handleSelectChange} placeholder="type" />
-            </div>
-      
+      <Select className="myDropdown" options={theseOptions} onChange={this.handleSelectChange} placeholder="type" 
+      defaultValue={defaultOption}/>
+            </div>      
     }
-    //TODO: react-select not showing what is selected, if we use state to control what
-    //is shown then it causes re-rendering and an infinite loop
-      //this.setState({fieldTypeSelected: selectedFieldType});
-    
 
     return theseFields;
   }
